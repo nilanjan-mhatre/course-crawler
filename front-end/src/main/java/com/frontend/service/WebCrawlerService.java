@@ -75,15 +75,17 @@ public class WebCrawlerService {
     }
 
     public void populateData(String title, String source) {
-        ObjectMapperUtils objectMapper = new ObjectMapperUtils();
-        System.out.println(source);
-        try {
-            CourseDTO courseDTO = new CourseDTO(title, source);
-            processHomeURL(courseDTO);
-            Course course = objectMapper.map(courseDTO, Course.class);
-            courseRepository.save(course);
-        } catch (IOException e) {
-            e.printStackTrace();
+        Course course = courseRepository.getCourseByNameAndSource(title, source);
+        if(course == null) {
+            ObjectMapperUtils objectMapper = new ObjectMapperUtils();
+            try {
+                CourseDTO courseDTO = new CourseDTO(title, source);
+                processHomeURL(courseDTO);
+                course = objectMapper.map(courseDTO, Course.class);
+                courseRepository.save(course);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
