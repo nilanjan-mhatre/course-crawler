@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="Course Crawler">
+<meta name="author" content="Nilanjan Mhatre">
+
+<title>Tutorial</title>
+
+<!-- Bootstrap core CSS -->
+<link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Custom fonts for this template -->
+<link
+	href="https://fonts.googleapis.com/css?family=Saira+Extra+Condensed:500,700"
+	rel="stylesheet">
+<link
+	href="https://fonts.googleapis.com/css?family=Muli:400,400i,800,800i"
+	rel="stylesheet">
+<link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
+
+<!-- Custom styles for this template -->
+<link href="css/resume.css" rel="stylesheet">
+<!-- Bootstrap core JavaScript -->
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<script type="text/javascript">
+	function crawl() {
+		var course = $("#course").val();
+		$.ajax({
+			url : "/crawl",
+			data : {
+				course : course
+			}
+		}).done(function() {
+			$("#course").val("");
+		});
+	}
+</script>
+
+</head>
+
+<body id="page-top" style="margin: 100px;">
+
+	<p align="center">
+		<input id="course" name="course" type="text"> <label
+			for="course">Submit to crawl for a new course</label>
+		<button onclick="crawl();">Crawl</button>
+	</p>
+	<table border="1">
+		<thead>
+			<tr>
+				<th>Available Courses</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td th:each="c: ${courses}"><a
+					class="nav-link js-scroll-trigger"
+					th:attr="href='/course?course=' + ${c}" th:text="${c}"></a></td>
+			</tr>
+		</tbody>
+	</table>
+
+</body>
+
+</html>
